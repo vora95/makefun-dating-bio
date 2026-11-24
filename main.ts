@@ -7,5 +7,11 @@ import { mkdirSync, writeFileSync } from "node:fs";
 const bio =
   "I read your entire chat history before our first date, so yes — I know about the ex, the gym phase, and the 2 a.m. search for 'how to be mysterious'.";
 
+// Gate guard: the sealed scorer only accepts 1–180 characters of non-blank
+// UTF-8 text. Fail loudly instead of writing an entry that can never be judged.
+if (bio.length < 1 || bio.length > 180 || bio.trim().length === 0) {
+  throw new Error(`bio must be 1-180 characters, got ${bio.length}`);
+}
+
 mkdirSync("/output", { recursive: true });
 writeFileSync("/output/entry.txt", bio, "utf8");
